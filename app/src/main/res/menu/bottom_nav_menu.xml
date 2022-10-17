@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/signals"
+        android:title="@string/signals"
+        android:icon="@drawable/ic_signal_foreground"/>
+    <item
+        android:id="@+id/news"
+        android:title="@string/news"
+        android:icon="@drawable/ic_news_foreground"/>
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings_foreground"/>
+</menu>

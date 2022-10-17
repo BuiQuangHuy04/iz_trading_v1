@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="show_password">show password</string>
+    <string name="account">Tài khoản</string>
+    <string name="password">Mật khẩu</string>
+    <string name="signin">Đăng nhập</string>
+    <string name="signup">Đăng ký</string>
+    <string name="intro_logo">intro logo</string>
+    <string name="name">Họ tên</string>
+    <string name="phone">Điện thoại</string>
+    <string name="email">Email</string>
+    <string name="signals">Signals</string>
+    <string name="news">News</string>
+    <string name="settings">Settings</string>
+</resources>

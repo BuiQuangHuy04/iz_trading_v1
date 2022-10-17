@@ -1,14 +1,16 @@
-package com.huybui.iztradingv1;
+package com.huybui.iztradingv1.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class SigninActivity extends AppCompatActivity {
+import com.huybui.iztradingv1.R;
+
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signin);
+        setContentView(R.layout.activity_main);
     }
 }
