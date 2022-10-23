@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:contentDescription="@string/show_password"
+            android:contentDescription="@string/hide_password"
             app:srcCompat="@mipmap/ic_hide_password_foreground"/>
     </androidx.cardview.widget.CardView>
 

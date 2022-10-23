@@ -62,30 +62,37 @@ public class SignupActivity extends AppCompatActivity {
         user.setPhone(mPhoneEdittxt.getText().toString());
         user.setEmail(mEmailEdittxt.getText().toString());
 
-        for (User u: userList) {
-            if (u.getAccount().equals(user.getAccount())) {
-                Toast.makeText(SignupActivity.this, "Tài khoản đã tồn tại!", Toast.LENGTH_SHORT).show();
-            } else if (u.getEmail().equals(user.getEmail())) {
-                Toast.makeText(SignupActivity.this, "Email đăng ký đã được sử dụng!", Toast.LENGTH_SHORT).show();
-            } else if (u.getPhone().equals(user.getPhone())) {
-                Toast.makeText(SignupActivity.this, "Số điện thoại đã được sử dụng!", Toast.LENGTH_SHORT).show();
-            } else {
-                UserService.userService.createUser(user).enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        Toast.makeText(SignupActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
-                        System.out.println(response);
-                    }
+        if (user.getName().matches("") ||
+                user.getAccount().matches("") ||
+                user.getPhone().matches("") ||
+                user.getEmail().matches("") ||
+                user.getEmail().matches(""))
+            Toast.makeText(SignupActivity.this, "Không được để trống thông tin!", Toast.LENGTH_SHORT).show();
+        else {
+            for (User u: userList) {
+                if (u.getAccount().equals(user.getAccount())) {
+                    Toast.makeText(SignupActivity.this, "Tài khoản đã tồn tại!", Toast.LENGTH_SHORT).show();
+                } else if (u.getEmail().equals(user.getEmail())) {
+                    Toast.makeText(SignupActivity.this, "Email đăng ký đã được sử dụng!", Toast.LENGTH_SHORT).show();
+                } else if (u.getPhone().equals(user.getPhone())) {
+                    Toast.makeText(SignupActivity.this, "Số điện thoại đã được sử dụng!", Toast.LENGTH_SHORT).show();
+                } else {
+                    UserService.userService.createUser(user).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            Toast.makeText(SignupActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                            System.out.println(response);
+                        }
 
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
 
-                    }
-                });
-                startActivity(new Intent(SignupActivity.this, SigninActivity.class));
-                break;
+                        }
+                    });
+                    startActivity(new Intent(SignupActivity.this, SigninActivity.class));
+                    break;
+                }
             }
         }
-
     }
 }

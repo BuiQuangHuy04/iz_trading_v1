@@ -2,6 +2,7 @@ package com.huybui.iztradingv1.API;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.Model.User;
 
 import java.util.List;
@@ -22,9 +23,9 @@ public interface OrderService {
             .build().create(OrderService.class);
 
     @GET("api/orders/getAll")
-    Call<List<User>> getOrders();
+    Call<List<Order>> getOrders();
 
     @GET("api/orders/getOne/{id}")
-    Call<User> getOrderByID(@Path("id") String id);
+    Call<Order> getOrderByID(@Path("id") String id);
 
 }

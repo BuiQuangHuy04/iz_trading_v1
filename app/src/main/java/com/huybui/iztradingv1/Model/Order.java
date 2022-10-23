@@ -1,15 +1,15 @@
 package com.huybui.iztradingv1.Model;
 
 public class Order {
-    protected String ticket;
-    protected String pair;
-    protected String type;
-    protected String lots;
-    protected String price;
-    protected String sl;
-    protected String tp;
-    protected String time;
-    protected String comment;
+    public String ticket;
+    public String pair;
+    public String type;
+    public String lots;
+    public String price;
+    public String sl;
+    public String tp;
+    public String time;
+    public String comment;
 
     public Order() {
     }
