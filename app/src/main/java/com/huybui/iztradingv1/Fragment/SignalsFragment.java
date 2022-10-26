@@ -10,8 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.huybui.iztradingv1.API.OrderService;
+import com.huybui.iztradingv1.Activity.MainActivity;
 import com.huybui.iztradingv1.Adapter.OrderAdapter;
 import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
