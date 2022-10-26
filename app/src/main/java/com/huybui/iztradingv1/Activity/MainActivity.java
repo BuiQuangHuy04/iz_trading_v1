@@ -2,15 +2,11 @@ package com.huybui.iztradingv1.Activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.huybui.iztradingv1.API.OrderService;
 import com.huybui.iztradingv1.Fragment.NewsFragment;
 import com.huybui.iztradingv1.Fragment.SettingsFragment;
@@ -34,12 +30,13 @@ public class MainActivity extends AppCompatActivity {
     NewsFragment newsFragment = new NewsFragment();
     SettingsFragment settingsFragment = new SettingsFragment();
 
+    public List<Order> orders = getOrders();
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, new SignalsFragment()).commit();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -54,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.mitem_settings:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, settingsFragment).commit();
                     return true;
+                default:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, signalsFragment).commit();
             }
             return false;
         });
+
         bottomNavigationView.setOnItemReselectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.mitem_news:
@@ -70,37 +70,36 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, signalsFragment).commit();
             }
         });
-
-//        bottomNavigationView.setSelectedItemId(R.id.mitem_signals);
     }
 
-//    public List<Order> getSignals() {
-//        List<Order> orderList = new ArrayList<>();
-//        OrderService.orderService.getOrders().enqueue(new Callback<List<Order>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {
-//                if (response.body() != null) {
-//                    orderList.addAll(response.body());
-//
-//                    orderList.removeIf(o->{
-//                        try {
-//                            return o.getClass().getDeclaredField("ticket").get(o) == null;
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        return false;
-//                    });
-//
-//                    Collections.reverse(orderList);
-//                } else
-//                    Toast.makeText(MainActivity.this, "response.body() is null", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<Order>> call, @NonNull Throwable t) {
-//                Toast.makeText(MainActivity.this, "get orders fail", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        return orderList;
-//    }
+    public List<Order> getOrders() {
+        System.out.println("loading orders");
+        List<Order> orders = new ArrayList<>();
+        OrderService.orderService.getOrders().enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {
+                if (response.body() != null) {
+                    orders.addAll(response.body());
+
+                    orders.removeIf(o->{
+                        try {
+                            return o.getClass().getDeclaredField("ticket").get(o) == null;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return false;
+                    });
+
+                    Collections.reverse(orders);
+                } else
+                    System.out.println("getting orders");;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Order>> call, @NonNull Throwable t) {
+                System.out.println("get orders done");
+            }
+        });
+        return orders;
+    }
 }

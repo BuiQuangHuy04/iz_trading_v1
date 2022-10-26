@@ -4,31 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.huybui.iztradingv1.API.OrderService;
 import com.huybui.iztradingv1.Activity.MainActivity;
 import com.huybui.iztradingv1.Adapter.OrderAdapter;
-import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class SignalsFragment extends Fragment {
-
-    private final List<Order> orderList = new ArrayList<>();
 
     public SignalsFragment(){
 
@@ -43,35 +28,14 @@ public class SignalsFragment extends Fragment {
 
         rcvOrder.setLayoutManager(new GridLayoutManager(rootview.getContext(),1));
 
-        OrderService.orderService.getOrders().enqueue(new Callback<List<Order>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Order>> call, @NonNull Response<List<Order>> response) {
-                if (response.body() != null) {
-                    orderList.addAll(response.body());
+        System.out.println("Signals fragment is loading data");
 
-                    orderList.removeIf(o->{
-                        try {
-                            return o.getClass().getDeclaredField("ticket").get(o) == null;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return false;
-                    });
+        MainActivity mainActivity = (MainActivity) getActivity();
 
-                    Collections.reverse(orderList);
-                } else
-                    Toast.makeText(rootview.getContext(), "response.body() is null", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Order>> call, @NonNull Throwable t) {
-                Toast.makeText(rootview.getContext(), "get orders fail", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         OrderAdapter mOrderAdapter = new OrderAdapter(rootview.getContext());
 
-        mOrderAdapter.setData(orderList);
+        mOrderAdapter.setData(mainActivity.orders);
         rcvOrder.setAdapter(mOrderAdapter);
 
         return rootview;
