@@ -7,21 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.huybui.iztradingv1.Fragment.SignalsFragment;
 import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
 
 import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewholder> {
+public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderViewholder> {
 
     private Context mContext;
     private List<Order> mOrderList;
 
-    public OrderAdapter(Context context) {
+    public SignalsAdapter(Context context) {
         this.mContext = context;
     }
 
@@ -33,7 +31,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewhol
     @NonNull
     @Override
     public OrderViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         return new OrderViewholder(view);
     }
 

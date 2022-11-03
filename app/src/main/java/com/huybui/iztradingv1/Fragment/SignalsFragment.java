@@ -6,39 +6,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.huybui.iztradingv1.Activity.MainActivity;
-import com.huybui.iztradingv1.Adapter.OrderAdapter;
+import com.huybui.iztradingv1.Adapter.SignalsAdapter;
 import com.huybui.iztradingv1.R;
+import com.huybui.iztradingv1.ViewModel.SignalsViewModel;
 
 public class SignalsFragment extends Fragment {
 
-    public SignalsFragment(){
-
-    }
+    public SignalsFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View rootview = inflater.inflate(R.layout.fragment_signals, container, false);
 
-        RecyclerView rcvOrder = rootview.findViewById(R.id.recycler_item);
+        SignalsViewModel signalsViewModel = new ViewModelProvider(this).get(SignalsViewModel.class);
+
+        RecyclerView rcvOrder = rootview.findViewById(R.id.item_signal);
 
         rcvOrder.setLayoutManager(new GridLayoutManager(rootview.getContext(),1));
 
-        System.out.println("Signals fragment is loading data");
+        SignalsAdapter mSignalsAdapter = new SignalsAdapter(rootview.getContext());
 
-        MainActivity mainActivity = (MainActivity) getActivity();
+        signalsViewModel.getOrders().observe(getViewLifecycleOwner(), mSignalsAdapter::setData);
 
-
-        OrderAdapter mOrderAdapter = new OrderAdapter(rootview.getContext());
-
-        mOrderAdapter.setData(mainActivity.orders);
-        rcvOrder.setAdapter(mOrderAdapter);
+        rcvOrder.setAdapter(mSignalsAdapter);
 
         return rootview;
     }
-
 }

@@ -15,8 +15,17 @@
         android:theme="@style/Theme.IZTradingV1"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.NewsDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".Activity.MainActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activity.SignupActivity"
-            android:exported="false" android:parentActivityName=".Activity.SigninActivity">
+            android:exported="false"
+            android:parentActivityName=".Activity.SigninActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -26,6 +35,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
