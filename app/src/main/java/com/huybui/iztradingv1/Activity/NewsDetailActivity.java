@@ -12,9 +12,6 @@ import com.squareup.picasso.Picasso;
 
 public class NewsDetailActivity extends AppCompatActivity {
 
-    private TextView txtv_news_title, txtv_user_acc, txtv_news_date, txtv_news_body;
-    private ImageView iv_img_news;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +21,13 @@ public class NewsDetailActivity extends AppCompatActivity {
         if (bundle == null) return;
 
         News news = (News) bundle.get("news_detail");
-//        System.out.println(news);
 
         try {
-            txtv_news_title = findViewById(R.id.txtv_news_title);
-            txtv_user_acc = findViewById(R.id.txtv_user_acc);
-            txtv_news_date = findViewById(R.id.txtv_news_date);
-            txtv_news_body = findViewById(R.id.txtv_news_body);
-            iv_img_news = findViewById(R.id.iv_img_news);
+            TextView txtv_news_title = findViewById(R.id.txtv_news_title);
+            TextView txtv_user_acc = findViewById(R.id.txtv_user_acc);
+            TextView txtv_news_date = findViewById(R.id.txtv_news_date);
+            TextView txtv_news_body = findViewById(R.id.txtv_news_body);
+            ImageView iv_img_news = findViewById(R.id.iv_img_news);
 
             Picasso.get()
                     .load(news.getThumbnail())

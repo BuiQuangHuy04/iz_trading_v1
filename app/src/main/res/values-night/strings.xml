@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="show_password">show password</string>
-    <string name="account">Tài khoản</string>
     <string name="password">Mật khẩu</string>
     <string name="signin">Đăng nhập</string>
-    <string name="signup">Đăng ký</string>
+    <string name="signup">Chưa có tài khoản</string>
     <string name="intro_logo">intro logo</string>
     <string name="name">Họ tên</string>
     <string name="phone">Điện thoại</string>
@@ -13,4 +12,18 @@
     <string name="news">News</string>
     <string name="settings">Settings</string>
     <string name="hide_password">hide password</string>
+    <string name="register">Đăng ký</string>
+    <string name="total_signals">Total</string>
+    <string name="total_signals_ex">0</string>
+    <string name="wins">Wins</string>
+    <string name="total_wins_ex">0</string>
+    <string name="total_wins_rate_ex">(0%)</string>
+    <string name="change_user_info">Thay đổi thông tin</string>
+    <string name="signout">Đăng xuất</string>
+    <string name="tv_phone_ex">0345441338</string>
+    <string name="tv_phone">Điện thoại:</string>
+    <string name="tv_mail">Email:</string>
+    <string name="tv_mail_ex">mail@gmail.com</string>
+    <string name="tv_name">Họ tên:</string>
+    <string name="tv_name_ex">Huy</string>
 </resources>

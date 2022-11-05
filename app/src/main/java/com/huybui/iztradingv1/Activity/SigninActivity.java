@@ -1,7 +1,7 @@
 package com.huybui.iztradingv1.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -10,104 +10,91 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.huybui.iztradingv1.API.UserService;
-import com.huybui.iztradingv1.Model.User;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.huybui.iztradingv1.R;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SigninActivity extends AppCompatActivity {
 
-    private EditText mAccountEdittxt, mPasswordEdittxt;
-    private List<User> userList = new ArrayList<>();
+    private EditText edtMail, edtPass;
+    private Button btnSignin;
+    private TextView tvSignup;
+    private ImageButton ibtnShowPass;
+    private ImageButton ibtnHidePass;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        mAccountEdittxt = findViewById(R.id.etxtAccount);
-        mPasswordEdittxt = findViewById(R.id.etxtPassword);
-        Button mSigninBtn = findViewById(R.id.btnSignIn);
-        Button mSignupBtn = findViewById(R.id.btnSignUp);
-        ImageButton mShowPassImgbtn = findViewById(R.id.ibtnShowPassword);
-        ImageButton mHidePassImgbtn = findViewById(R.id.ibtnHidePassword);
+        edtMail = findViewById(R.id.edt_email);
+        edtPass = findViewById(R.id.edt_password);
+        btnSignin = findViewById(R.id.btn_sign_in);
+        tvSignup = findViewById(R.id.btn_sign_up);
+        ibtnShowPass = findViewById(R.id.ibtn_show_password);
+        ibtnHidePass = findViewById(R.id.ibtn_hide_password);
 
-        mHidePassImgbtn.setVisibility(View.INVISIBLE);
+        ibtnHidePass.setVisibility(View.INVISIBLE);
 
-        UserService.userService.getUsers().enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (response.body() != null)
-                    userList.addAll(response.body());
-                else
-                    Toast.makeText(SigninActivity.this, "response.body() is null", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(SigninActivity.this, "get users fail", Toast.LENGTH_SHORT).show();
-            }
+        ibtnShowPass.setOnClickListener(view -> {
+            ibtnShowPass.setVisibility(View.INVISIBLE);
+            ibtnHidePass.setVisibility(View.VISIBLE);
+            edtPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         });
 
-        mShowPassImgbtn.setOnClickListener(view -> {
-            mShowPassImgbtn.setVisibility(View.INVISIBLE);
-            mHidePassImgbtn.setVisibility(View.VISIBLE);
-            mPasswordEdittxt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        ibtnHidePass.setOnClickListener(view -> {
+            ibtnHidePass.setVisibility(View.INVISIBLE);
+            ibtnShowPass.setVisibility(View.VISIBLE);
+            edtPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
         });
 
-        mHidePassImgbtn.setOnClickListener(view -> {
-            mHidePassImgbtn.setVisibility(View.INVISIBLE);
-            mShowPassImgbtn.setVisibility(View.VISIBLE);
-            mPasswordEdittxt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        });
+        btnSignin.setOnClickListener(view -> Signin());
 
-        mSigninBtn.setOnClickListener(view -> Signin());
-
-        mSignupBtn.setOnClickListener(view -> startActivity(new Intent(SigninActivity.this, SignupActivity.class)));
+        tvSignup.setOnClickListener(view -> startActivity(new Intent(SigninActivity.this, SignupActivity.class)));
     }
-
-//    private List<User> getListUsers() {
-//        List<User> list = new ArrayList<>();
-//        UserService.userService.getUsers().enqueue(new Callback<List<User>>() {
-//            @Override
-//            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-//                if (response.body() != null)
-//                    list.addAll(response.body());
-//                else
-//                    Toast.makeText(SigninActivity.this, "response.body() is null", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<User>> call, Throwable t) {
-//                Toast.makeText(SigninActivity.this, "get users fail", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        return list;
-//    }
 
     private void Signin() {
-        if (mAccountEdittxt.getText().toString().matches("") || mPasswordEdittxt.getText().toString().matches("")){
-            Toast.makeText(SigninActivity.this, "Không được để trống tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
-        } else {
-            int count = 0;
+        progressDialog.show();
+        try {
+            String strEmail = edtMail.getText().toString().trim();
+            String strPass = edtPass.getText().toString().trim();
 
-            for (User u: userList) {
-                if (mAccountEdittxt.getText().toString().equals(u.getAccount())) {
-                    Toast.makeText(SigninActivity.this, "Tài khoản " + mAccountEdittxt.getText().toString() + " đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SigninActivity.this, MainActivity.class));
-                    break;
-                } else count++;
+            if (strEmail.equals("") | strPass.equals("")) {
+                alert("Không được để trống thông tin!", this);
+            } else {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                auth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(SigninActivity.this, "Authentication successfully.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(SigninActivity.this, MainActivity.class));
+                            } else {
+                                Toast.makeText(SigninActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            }
+                            progressDialog.dismiss();
+                        });
             }
-            if (count != 0 && SigninActivity.this.getWindow().getDecorView().getRootView().isFocused())
-                Toast.makeText(SigninActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+    public void alert(String strErr, Context context) {
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+
+        dlgAlert.setMessage(strErr);
+        dlgAlert.setTitle("Cảnh báo");
+        dlgAlert.setPositiveButton("OK", null);
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
+    }
+
+
 }

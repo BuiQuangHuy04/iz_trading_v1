@@ -1,40 +1,132 @@
 package com.huybui.iztradingv1.Fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.huybui.iztradingv1.Activity.MainActivity;
 import com.huybui.iztradingv1.Adapter.SignalsAdapter;
+import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
-import com.huybui.iztradingv1.ViewModel.SignalsViewModel;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SignalsFragment extends Fragment {
 
-    public SignalsFragment(){}
+    private Context mContext;
+
+    public final ArrayList<Order> signalsList = new ArrayList<>();
+
+    private TextView  tvTotal, tvWinsRate, tvWinsTotal;
+
+    public SignalsFragment(Context context){
+        this.mContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View rootview = inflater.inflate(R.layout.fragment_signals, container, false);
 
-        SignalsViewModel signalsViewModel = new ViewModelProvider(this).get(SignalsViewModel.class);
+        tvTotal = rootview.findViewById(R.id.tv_total_signals);
+        tvWinsRate = rootview.findViewById(R.id.tv_wins_rate);
+        tvWinsTotal = rootview.findViewById(R.id.tv_wins_total);
 
-        RecyclerView rcvOrder = rootview.findViewById(R.id.item_signal);
+        RecyclerView rcvSignals = rootview.findViewById(R.id.item_signal);
 
-        rcvOrder.setLayoutManager(new GridLayoutManager(rootview.getContext(),1));
+        rcvSignals.setLayoutManager(new GridLayoutManager(rootview.getContext(),1));
 
-        SignalsAdapter mSignalsAdapter = new SignalsAdapter(rootview.getContext());
+        SignalsAdapter adapter = new SignalsAdapter(rootview.getContext());
 
-        signalsViewModel.getOrders().observe(getViewLifecycleOwner(), mSignalsAdapter::setData);
+        getSignalsList(adapter);
 
-        rcvOrder.setAdapter(mSignalsAdapter);
+        adapter.setData(signalsList);
+
+        rcvSignals.setAdapter(adapter);
 
         return rootview;
+    }
+
+    private void getSignalsList(SignalsAdapter adapter) {
+        // Read from the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("orders");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                signalsList.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    signalsList.add(dataSnapshot.getValue(Order.class));
+                }
+
+                //so pips win
+                AtomicReference<Double> pips = new AtomicReference<>((double) 0);
+                //so lenh win
+                AtomicInteger winNo = new AtomicInteger();
+                try {
+                    signalsList.forEach(o->{
+                        if(o.getComment() != null && !o.getComment().trim().isEmpty() && !o.getComment().trim().equals("cabinet") && !o.getComment().trim().isEmpty()) {
+                            double prf;
+                            double open = Double.parseDouble(o.getPrice().trim());
+                            double close = Double.parseDouble(o.getComment().trim());
+                            if (o.getType().trim().equals("SELL")) {
+                                prf = open - close;
+                            } else {
+                                prf = close - open;
+                            }
+                            if (prf>0) winNo.getAndIncrement();
+                            pips.set(prf + pips.get());
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                float winRate = Float.parseFloat(String.valueOf(winNo)) / (float) signalsList.size();
+
+                DecimalFormat df = new DecimalFormat("#.###");
+
+                String totalSignalsStr = String.valueOf(signalsList.size());
+                String winTotalsStr = String.valueOf(winNo);
+                String winRateStr = "("+df.format(winRate*100)+"%)";
+                tvTotal.setText(totalSignalsStr);
+                tvWinsTotal.setText(winTotalsStr);
+                tvWinsRate.setText(winRateStr);
+
+                Collections.reverse(Objects.requireNonNull(signalsList));
+
+                adapter.notifyDataSetChanged();
+
+//                Intent intent = new Intent(mContext, MainActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("signal", signalsList.get(0));
+//                intent.putExtras(bundle);
+//                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
     }
 }

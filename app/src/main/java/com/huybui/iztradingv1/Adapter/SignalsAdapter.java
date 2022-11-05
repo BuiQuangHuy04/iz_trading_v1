@@ -1,5 +1,6 @@
 package com.huybui.iztradingv1.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +17,14 @@ import java.util.List;
 
 public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderViewholder> {
 
-    private Context mContext;
+    private final Context mContext;
     private List<Order> mOrderList;
 
     public SignalsAdapter(Context context) {
         this.mContext = context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Order> list) {
         this.mOrderList = list;
         notifyDataSetChanged(); //load n build data
@@ -57,9 +59,14 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
         return 0;
     }
 
-    public class OrderViewholder extends RecyclerView.ViewHolder {
+    public static class OrderViewholder extends RecyclerView.ViewHolder {
 
-        private TextView txtvPair, txtvTime, txtvType, txtvPrice, txtvSl, txtvTp;
+        private final TextView txtvPair;
+        private final TextView txtvTime;
+        private final TextView txtvType;
+        private final TextView txtvPrice;
+        private final TextView txtvSl;
+        private final TextView txtvTp;
 
         public OrderViewholder(@NonNull View itemView) {
             super(itemView);

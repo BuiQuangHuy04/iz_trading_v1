@@ -1,5 +1,6 @@
 package com.huybui.iztradingv1.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,13 +23,14 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewholder> {
 
-    private Context mContext;
+    private final Context mContext;
     private List<News> mNewsList;
 
     public NewsAdapter(Context context) {
         this.mContext = context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<News> list) {
         this.mNewsList = list;
         notifyDataSetChanged(); //load n build data
@@ -56,15 +58,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewholder
 
         holder.txtv_title_news.setText(news.getTitle());
 
-        holder.layout_news_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, NewsDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("news_detail", news);
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
-            }
+        holder.layout_news_container.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, NewsDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("news_detail", news);
+            intent.putExtras(bundle);
+            mContext.startActivity(intent);
         });
     }
 
@@ -76,11 +75,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewholder
         return 0;
     }
 
-    public class NewsViewholder extends RecyclerView.ViewHolder {
+    public static class NewsViewholder extends RecyclerView.ViewHolder {
 
-        private CardView layout_news_container;
-        private TextView txtv_title_news;
-        private ImageView iv_thumbnail_news;
+        private final CardView layout_news_container;
+        private final TextView txtv_title_news;
+        private final ImageView iv_thumbnail_news;
 
         public NewsViewholder(@NonNull View itemView) {
             super(itemView);

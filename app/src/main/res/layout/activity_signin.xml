@@ -15,54 +15,55 @@
         android:layout_marginTop="50dp"
         android:layout_marginRight="32dp"
         android:contentDescription="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@+id/cardviewAccount"
+        app:layout_constraintBottom_toTopOf="@+id/cardview_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher"/>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardviewAccount"
+        android:id="@+id/cardview_account"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardviewPassword"
+        app:layout_constraintBottom_toTopOf="@+id/cardview_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_imageView">
 
         <EditText
-            android:id="@+id/etxtAccount"
+            android:id="@+id/edt_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/custom_input_effect"
             android:ems="10"
-            android:hint="@string/account"
+            android:hint="@string/email"
             android:importantForAutofill="no"
             android:inputType="text"
+            android:maxLength="100"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardviewPassword"
+        android:id="@+id/cardview_password"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSignIn"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardviewAccount">
+        app:layout_constraintTop_toBottomOf="@+id/cardview_account">
         <EditText
-            android:id="@+id/etxtPassword"
+            android:id="@+id/edt_password"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:background="@drawable/custom_input_effect"
@@ -71,55 +72,58 @@
             android:hint="@string/password"
             android:ems="10"
             android:inputType="textPassword"
+            android:maxLength="100"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:autofillHints=""
             android:importantForAutofill="no"/>
         <ImageButton
-            android:id="@+id/ibtnShowPassword"
+            android:id="@+id/ibtn_show_password"
             android:layout_gravity="end"
             android:background="@color/dark_input_button_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:padding="5dp"
             android:contentDescription="@string/show_password"
             app:srcCompat="@mipmap/ic_show_password_foreground"/>
         <ImageButton
-            android:id="@+id/ibtnHidePassword"
+            android:id="@+id/ibtn_hide_password"
             android:layout_gravity="end"
             android:background="@color/dark_input_button_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:padding="5dp"
             android:contentDescription="@string/hide_password"
             app:srcCompat="@mipmap/ic_hide_password_foreground"/>
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/btnSignIn"
+        android:id="@+id/btn_sign_in"
         android:textColor="@color/white"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:text="@string/signin"
         android:backgroundTint="@color/dark_input_button_background"
         app:cornerRadius="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardviewPassword"/>
+        app:layout_constraintTop_toBottomOf="@+id/cardview_password"/>
 
-    <Button
-        android:id="@+id/btnSignUp"
+    <TextView
+        android:id="@+id/btn_sign_up"
         android:textColor="@color/white"
         android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:text="@string/signup"
+        android:gravity="center"
+        android:padding="15dp"
         android:backgroundTint="@color/dark_input_button_background"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignIn"/>
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_in"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

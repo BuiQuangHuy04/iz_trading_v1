@@ -1,6 +1,10 @@
 package com.huybui.iztradingv1.Model;
 
-public class User {
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+public class User implements Serializable {
     protected String account;
     protected String password;
     protected String name;
@@ -60,4 +64,17 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+
+    public Map<String, String> toMap(User u) {
+
+        HashMap<String, String> userHashMap = new HashMap<>();
+        userHashMap.put("account", u.getAccount());
+        userHashMap.put("password", u.getPassword());
+        userHashMap.put("name", u.getName());
+        userHashMap.put("phone", u.getPhone());
+        userHashMap.put("email", u.getEmail());
+        return userHashMap;
+    }
+
 }
