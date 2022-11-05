@@ -60,13 +60,13 @@ public class SigninActivity extends AppCompatActivity {
         mShowPassImgbtn.setOnClickListener(view -> {
             mShowPassImgbtn.setVisibility(View.INVISIBLE);
             mHidePassImgbtn.setVisibility(View.VISIBLE);
-            mPasswordEdittxt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            mPasswordEdittxt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         });
 
         mHidePassImgbtn.setOnClickListener(view -> {
             mHidePassImgbtn.setVisibility(View.INVISIBLE);
             mShowPassImgbtn.setVisibility(View.VISIBLE);
-            mPasswordEdittxt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            mPasswordEdittxt.setTransformationMethod(PasswordTransformationMethod.getInstance());
         });
 
         mSigninBtn.setOnClickListener(view -> Signin());
