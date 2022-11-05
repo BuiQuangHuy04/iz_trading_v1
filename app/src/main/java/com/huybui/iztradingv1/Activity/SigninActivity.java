@@ -74,25 +74,6 @@ public class SigninActivity extends AppCompatActivity {
         mSignupBtn.setOnClickListener(view -> startActivity(new Intent(SigninActivity.this, SignupActivity.class)));
     }
 
-//    private List<User> getListUsers() {
-//        List<User> list = new ArrayList<>();
-//        UserService.userService.getUsers().enqueue(new Callback<List<User>>() {
-//            @Override
-//            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-//                if (response.body() != null)
-//                    list.addAll(response.body());
-//                else
-//                    Toast.makeText(SigninActivity.this, "response.body() is null", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<User>> call, Throwable t) {
-//                Toast.makeText(SigninActivity.this, "get users fail", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        return list;
-//    }
-
     private void Signin() {
         if (mAccountEdittxt.getText().toString().matches("") || mPasswordEdittxt.getText().toString().matches("")){
             Toast.makeText(SigninActivity.this, "Không được để trống tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
@@ -105,6 +86,12 @@ public class SigninActivity extends AppCompatActivity {
                     startActivity(new Intent(SigninActivity.this, MainActivity.class));
                     break;
                 } else count++;
+
+                if (!mAccountEdittxt.getText().toString().equals(u.getAccount())) {
+                    Toast.makeText(SigninActivity.this, "Tài khoản " + mAccountEdittxt.getText().toString() + " chưa được đăng ký!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SigninActivity.this, SignupActivity.class));
+                    break;
+                }
             }
             if (count != 0 && SigninActivity.this.getWindow().getDecorView().getRootView().isFocused())
                 Toast.makeText(SigninActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
