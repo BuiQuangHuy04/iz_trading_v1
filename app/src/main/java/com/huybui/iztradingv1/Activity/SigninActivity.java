@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.huybui.iztradingv1.R;
 
 public class SigninActivity extends AppCompatActivity {
@@ -27,7 +26,6 @@ public class SigninActivity extends AppCompatActivity {
     private TextView tvSignup;
     private ImageButton ibtnShowPass;
     private ImageButton ibtnHidePass;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +59,15 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     private void Signin() {
-        progressDialog.show();
         try {
+            ProgressDialog progressDialog = new ProgressDialog(this);
             String strEmail = edtMail.getText().toString().trim();
             String strPass = edtPass.getText().toString().trim();
 
             if (strEmail.equals("") | strPass.equals("")) {
                 alert("Không được để trống thông tin!", this);
             } else {
+                progressDialog.show();
                 FirebaseAuth auth = FirebaseAuth.getInstance();
 
                 auth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(this, task -> {

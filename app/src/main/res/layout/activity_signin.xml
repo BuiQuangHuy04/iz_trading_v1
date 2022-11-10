@@ -42,7 +42,7 @@
             android:ems="10"
             android:hint="@string/email"
             android:importantForAutofill="no"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:maxLength="100"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
