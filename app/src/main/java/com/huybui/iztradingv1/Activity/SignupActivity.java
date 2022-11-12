@@ -57,6 +57,9 @@ public class SignupActivity extends AppCompatActivity {
                 if (strPass.length() < 6) {
                     new SigninActivity().alert("Mật khẩu cần ít nhất 6 ký tự!", this);
                 }
+                if (!strEmail.contains("@")) {
+                    new SigninActivity().alert("Không đúng định dạng mail!", this);
+                }
                 FirebaseAuth auth = FirebaseAuth.getInstance();
 
                 progressDialog.show();
@@ -70,7 +73,7 @@ public class SignupActivity extends AppCompatActivity {
                         finishAffinity();
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(SignupActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Đăng ký thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

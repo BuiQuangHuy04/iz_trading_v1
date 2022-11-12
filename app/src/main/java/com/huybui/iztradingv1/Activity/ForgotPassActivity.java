@@ -28,16 +28,20 @@ public class ForgotPassActivity extends AppCompatActivity {
 
         confirmBtn.setOnClickListener(view -> {
             FirebaseAuth auth = FirebaseAuth.getInstance();
-            String emailAddress = emailEdt.getText().toString().trim();
+            String emailAddress = emailEdt.getText().toString();
 
-            auth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(this, "Kiểm tra email!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, SigninActivity.class));
-                } else {
-                    Toast.makeText(this, "Có lỗi xảy ra! Thử lại", Toast.LENGTH_SHORT).show();
-                }
-            });
+            try {
+                auth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Kiểm tra email!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, SigninActivity.class));
+                    } else {
+                        Toast.makeText(this, "Có lỗi xảy ra! Thử lại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (Exception e) {
+                new SigninActivity().alert("Không được để trống email!", this);
+            }
         });
     }
 }

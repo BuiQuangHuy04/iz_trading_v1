@@ -75,10 +75,10 @@ public class SigninActivity extends AppCompatActivity {
 
                 auth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(SigninActivity.this, "Authentication successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(this, MainActivity.class));
                     } else {
-                        Toast.makeText(SigninActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SigninActivity.this, "Kiểm tra lại email và mật khẩu!", Toast.LENGTH_SHORT).show();
                     }
                     progressDialog.dismiss();
                 });
@@ -92,11 +92,9 @@ public class SigninActivity extends AppCompatActivity {
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
 
         dlgAlert.setMessage(strErr);
-        dlgAlert.setTitle("Cảnh báo");
+        dlgAlert.setTitle("Thông báo");
         dlgAlert.setPositiveButton("OK", null);
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
-
-
 }
