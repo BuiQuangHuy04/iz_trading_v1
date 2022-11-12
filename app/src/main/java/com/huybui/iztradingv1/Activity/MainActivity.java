@@ -1,9 +1,14 @@
 package com.huybui.iztradingv1.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.SurfaceControl;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -12,21 +17,46 @@ import com.google.firebase.auth.FirebaseUser;
 import com.huybui.iztradingv1.Fragment.NewsFragment;
 import com.huybui.iztradingv1.Fragment.SettingsFragment;
 import com.huybui.iztradingv1.Fragment.SignalsFragment;
-import com.huybui.iztradingv1.Model.News;
-import com.huybui.iztradingv1.Model.Order;
-import com.huybui.iztradingv1.Model.User;
 import com.huybui.iztradingv1.R;
-import com.huybui.iztradingv1.Service.NotificationService;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigationView;
-    SignalsFragment signalsFragment = new SignalsFragment(this);
-    NewsFragment newsFragment = new NewsFragment();
-    SettingsFragment settingsFragment = new SettingsFragment(this);
+    public static final int REQUEST_CODE = 0;
+
+    protected BottomNavigationView bottomNavigationView;
+    protected SignalsFragment signalsFragment = new SignalsFragment(this);
+    protected NewsFragment newsFragment = new NewsFragment();
+    protected SettingsFragment settingsFragment = new SettingsFragment(this);
+
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getResultCode() == RESULT_OK) {
+            Intent intent = result.getData();
+            if (intent == null) {
+                return;
+            }
+            Uri uri = intent.getData();
+            settingsFragment.setUri(uri);
+
+            CircleImageView imageView = findViewById(R.id.img_user_ava);
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (user == null) {
+                return;
+            }
+
+            Picasso.get()
+                .load(uri)
+                .placeholder(R.mipmap.user_ava_default_round)
+                .into(imageView);
+        }
+    });
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -40,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUi() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, signalsFragment).commit();
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void initUiListener() {
         try {
             bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -55,12 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, newsFragment).commit();
                         return true;
                     case R.id.mitem_settings:
-                        try {
                             getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, settingsFragment).commit();
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                         return true;
                     default:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, signalsFragment).commit();
@@ -68,20 +93,34 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
 
-//            Bundle bundle = getIntent().getExtras();
-//            if (bundle == null) return;
-//
-//            Order order = (Order) bundle.getSerializable("signal");
-//
-//            NotificationService notificationService = new NotificationService(this);
-//
-//            String title = order.getType() + " " + order.getPair() + " " + order.getPrice();
-//
-//            String body = "SL: " + order.getSl() + "\nTP: " + order.getTp();
-//
-//            notificationService.sendNoti(title, body);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        AtomicBoolean checkGrant = new AtomicBoolean(false);
+
+        Arrays.stream(grantResults).forEach( i -> {
+            if(i == PackageManager.PERMISSION_GRANTED) {
+                checkGrant.set(true);
+            }
+        });
+
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && checkGrant.get()) {
+                openGallery();
+            }
+        }
+    }
+
+    public void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        activityResultLauncher.launch(Intent.createChooser(intent,"Chọn ảnh"));
     }
 }

@@ -26,4 +26,14 @@
     <string name="tv_mail_ex">mail@gmail.com</string>
     <string name="tv_name">Họ tên:</string>
     <string name="tv_name_ex">Huy</string>
+    <string name="save_user_info">Lưu</string>
+    <string name="change_user_pass">Đổi mật khẩu</string>
+    <string name="enter_old_pass">Nhập mật khẩu cũ:</string>
+    <string name="reenter_new_pass">Nhập lại mật khẩu:</string>
+    <string name="enter_new_pass">Nhập mật khẩu mới:</string>
+    <string name="cancel">Hủy</string>
+    <string name="change_pass">Đổi mật khẩu</string>
+    <string name="forgot_pass">Quên mật khẩu</string>
+    <string name="enter_email">Nhập email:</string>
+    <string name="send_request_reset_pass">Xác nhận</string>
 </resources>

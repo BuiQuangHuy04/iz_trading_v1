@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.widget.RemoteViews;
 
@@ -29,6 +31,9 @@ public class NotificationService {
             Intent intent = new Intent(mContext, MainActivity.class);
             PendingIntent pendingIntent;
 
+            Uri sound = RingtoneManager.getDefaultUri(Notification.DEFAULT_SOUND);
+            long[] vibrate = { 0, 100, 200, 300 };
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_MUTABLE);
             } else  pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -37,7 +42,9 @@ public class NotificationService {
                     .setContentTitle(title)
                     .setContentText(body)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setSound(sound)
+                    .setVibrate(vibrate)
                     .setContentIntent(pendingIntent)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(body));
 
@@ -46,9 +53,7 @@ public class NotificationService {
             NotificationManager notificationManager = mContext.getSystemService(NotificationManager.class);
             if (notificationManager != null) {
                 notificationManager.notify(1, notification);
-                System.out.println(notification);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

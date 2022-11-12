@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.AsyncListUtil;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
@@ -17,7 +20,7 @@ import com.huybui.iztradingv1.R;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText edtMail, edtPass, edtName;
+    private EditText edtMail, edtPass;
     private Button mSignupBtn;
     private ProgressDialog progressDialog;
 
@@ -26,10 +29,18 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        edtPass = findViewById(R.id.etxtPassword);
-        edtName = findViewById(R.id.etxtName);
         edtMail = findViewById(R.id.etxtEmail);
+        edtPass = findViewById(R.id.etxtPassword);
         mSignupBtn = findViewById(R.id.btn_sign_up);
+
+        edtPass.setOnClickListener (view -> {
+            edtPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            try {
+                new Handler().postDelayed(()-> edtPass.setTransformationMethod(PasswordTransformationMethod.getInstance()),1000L);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         progressDialog = new ProgressDialog(this);
         mSignupBtn.setOnClickListener(view -> onClickSignup());
@@ -39,10 +50,8 @@ public class SignupActivity extends AppCompatActivity {
         try {
             String strEmail = edtMail.getText().toString().trim();
             String strPass = edtPass.getText().toString().trim();
-            String strName = edtName.getText().toString().trim();
             if (strEmail.matches("") ||
-                    strPass.matches("") ||
-                    strName.matches("")) {
+                    strPass.matches("")) {
                 new SigninActivity().alert("Không được để trống thông tin!", this);
             } else {
                 if (strPass.length() < 6) {

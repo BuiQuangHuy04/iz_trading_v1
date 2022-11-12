@@ -23,7 +23,7 @@ public class SigninActivity extends AppCompatActivity {
 
     private EditText edtMail, edtPass;
     private Button btnSignin;
-    private TextView tvSignup;
+    private TextView tvSignup, tvForgotPass;
     private ImageButton ibtnShowPass;
     private ImageButton ibtnHidePass;
 
@@ -34,12 +34,15 @@ public class SigninActivity extends AppCompatActivity {
 
         edtMail = findViewById(R.id.edt_email);
         edtPass = findViewById(R.id.edt_password);
+        tvForgotPass = findViewById(R.id.btn_forgot_pass);
         btnSignin = findViewById(R.id.btn_sign_in);
         tvSignup = findViewById(R.id.btn_sign_up);
         ibtnShowPass = findViewById(R.id.ibtn_show_password);
         ibtnHidePass = findViewById(R.id.ibtn_hide_password);
 
         ibtnHidePass.setVisibility(View.INVISIBLE);
+
+        tvForgotPass.setOnClickListener(view -> startActivity(new Intent(SigninActivity.this, ForgotPassActivity.class)));
 
         ibtnShowPass.setOnClickListener(view -> {
             ibtnShowPass.setVisibility(View.INVISIBLE);
@@ -71,14 +74,14 @@ public class SigninActivity extends AppCompatActivity {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
 
                 auth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(this, task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(SigninActivity.this, "Authentication successfully.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SigninActivity.this, MainActivity.class));
-                            } else {
-                                Toast.makeText(SigninActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            }
-                            progressDialog.dismiss();
-                        });
+                    if (task.isSuccessful()) {
+                        Toast.makeText(SigninActivity.this, "Authentication successfully.", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, MainActivity.class));
+                    } else {
+                        Toast.makeText(SigninActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    }
+                    progressDialog.dismiss();
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -23,6 +23,7 @@ import com.huybui.iztradingv1.Activity.MainActivity;
 import com.huybui.iztradingv1.Adapter.SignalsAdapter;
 import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
+import com.huybui.iztradingv1.Service.NotificationService;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class SignalsFragment extends Fragment {
 
-    private Context mContext;
+    protected Context mContext;
 
-    public final ArrayList<Order> signalsList = new ArrayList<>();
+    protected final ArrayList<Order> signalsList = new ArrayList<>();
 
     private TextView  tvTotal, tvWinsRate, tvWinsTotal;
 
@@ -118,11 +119,10 @@ public class SignalsFragment extends Fragment {
 
                 adapter.notifyDataSetChanged();
 
-//                Intent intent = new Intent(mContext, MainActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("signal", signalsList.get(0));
-//                intent.putExtras(bundle);
-//                mContext.startActivity(intent);
+                NotificationService notificationService = new NotificationService(mContext);
+                String title = signalsList.get(0).getType() + " " + signalsList.get(0).getPair() + " " + signalsList.get(0).getPrice();
+                String body = "SL: " + signalsList.get(0).getSl() + "\nTP: " + signalsList.get(0).getTp();
+                notificationService.sendNoti(title, body);
             }
 
             @Override
