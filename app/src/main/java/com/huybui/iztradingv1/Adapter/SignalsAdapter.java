@@ -46,9 +46,7 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
 
         if (order == null) return;
 
-        int color = Color.parseColor("#ffd966");
-
-        color = setColor(order);
+        int color = setColor(order);
 
         holder.cardvContainer.setCardBackgroundColor(color);
         holder.cardvContainer.setRadius(25);
@@ -76,13 +74,16 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
                 message = "Màu xanh lá là lệnh đã có lãi";
                 break;
             case "#0c04aa":
-                message = "Màu xanh biển là lệnh đã chạm điểm cắt lỗ";
+                message = "Màu xanh dương là lệnh đã chạm điểm cắt lỗ";
                 break;
             case "#cc0000":
                 message = "Màu đỏ là lệnh bị lỗ";
                 break;
             case "#ffd966":
                 message = "Màu vàng là lệnh hòa";
+                break;
+            case "#28498c":
+                message = "Màu xanh nước là lệnh đang chạy";
                 break;
         }
         return message;
@@ -94,6 +95,10 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
         }
 
         int color = Color.parseColor("#ffd966");
+
+        if (order.getComment().matches("")) {
+            return color = Color.parseColor("#28498C");
+        }
 
         float openPrice = Float.parseFloat(order.getPrice());
         float closePrice = Float.parseFloat(order.getComment());
