@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_news_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/dark_background"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_thumbnail_news"
+            android:layout_width="230dp"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:layout_margin="5dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/thumbnail_news_ex_foreground"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/txtv_title_news"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:singleLine="false"
+            android:text="Canada đề xuất đánh thuế mua lại cổ phiếu doanh nghiệp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

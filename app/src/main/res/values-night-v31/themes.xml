@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen.IconBackground">
+        <!-- Set the splash screen background, animated icon, and animation duration. -->
+        <item name="android:windowSplashScreenBackground">@color/dark_background</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/dark_background</item>
+        <!-- Use windowSplashScreenAnimatedIcon to add either a drawable or an
+             animated drawable. One of these is required. -->
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo1</item>
+        <!-- Required for animated icons -->
+        <item name="android:windowSplashScreenAnimationDuration">500</item>
+
+        <!-- Set the theme of the Activity that directly follows your splash screen. -->
+        <!-- Required -->
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+</resources>

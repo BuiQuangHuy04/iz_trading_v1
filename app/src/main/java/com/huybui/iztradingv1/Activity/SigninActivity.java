@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.huybui.iztradingv1.R;
 
+import java.util.Calendar;
+
 public class SigninActivity extends AppCompatActivity {
 
     private EditText edtMail, edtPass;
@@ -88,13 +90,18 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
-    public void alert(String strErr, Context context) {
+    public long alert(String strErr, Context context) {
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+
+        Calendar time1 =  Calendar.getInstance();
 
         dlgAlert.setMessage(strErr);
         dlgAlert.setTitle("Thông báo");
         dlgAlert.setPositiveButton("OK", null);
+        Calendar time2 =  Calendar.getInstance();
         dlgAlert.setCancelable(true);
+        long diff = time1.getTimeInMillis() - time2.getTimeInMillis();
         dlgAlert.create().show();
+        return diff;
     }
 }

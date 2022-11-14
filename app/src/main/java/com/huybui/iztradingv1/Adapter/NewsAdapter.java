@@ -49,8 +49,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewholder
 
         if (news == null) return;
 
-//        System.out.println(news.getTitle());
-
         Picasso.get()
                 .load(news.getThumbnail())
                 .placeholder(R.mipmap.ic_launcher)

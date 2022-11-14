@@ -16,7 +16,10 @@ import com.huybui.iztradingv1.Activity.SigninActivity;
 import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderViewholder> {
 
@@ -51,15 +54,14 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
         holder.cardvContainer.setCardBackgroundColor(color);
         holder.cardvContainer.setRadius(25);
         holder.txtvPair.setText(order.getPair());
-        holder.txtvTime.setText(order.getTime());
+        holder.txtvTime.setText(convertTimeStamp(order.getTime()));
         holder.txtvType.setText(order.getType());
         holder.txtvPrice.setText(order.getPrice());
         holder.txtvSl.setText(order.getSl());
         holder.txtvTp.setText(order.getTp());
 
-        int finalColor = color;
         holder.cardvContainer.setOnClickListener(view -> {
-            String hexColor = "#"+Integer.toHexString(finalColor).substring(2);
+            String hexColor = "#"+Integer.toHexString(color).substring(2);
             new SigninActivity().alert(getSignalResult(hexColor),mContext);
         });
     }
@@ -145,6 +147,12 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
             }
         }
         return color;
+    }
+
+    private String convertTimeStamp(String time) {
+        SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yy HH:mm:ss", Locale.forLanguageTag("vi-VN"));
+        Date date = new Date(Long.parseLong(time+"000"));
+        return sf.format(date);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.huybui.iztradingv1.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.huybui.iztradingv1.Activity.MainActivity;
 import com.huybui.iztradingv1.Adapter.SignalsAdapter;
 import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
@@ -37,7 +35,9 @@ public class SignalsFragment extends Fragment {
 
     protected Context mContext;
 
-    protected final ArrayList<Order> signalsList = new ArrayList<>();
+    protected int checkPosition = 0;
+
+//    protected ArrayList<Order> signals = new ArrayList<>();
 
     private TextView  tvTotal, tvWinsRate, tvWinsTotal;
 
@@ -60,20 +60,37 @@ public class SignalsFragment extends Fragment {
 
         SignalsAdapter adapter = new SignalsAdapter(rootview.getContext());
 
-        getSignalsList(adapter);
+        ArrayList<Order> signals;
 
-        adapter.setData(signalsList);
+        checkPosition = 1;
+
+        signals = getSignalsList(adapter);
+
+        adapter.setData(signals);
 
         rcvSignals.setAdapter(adapter);
 
         return rootview;
     }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        checkPosition = 1;
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        checkPosition = 0;
+//    }
 
-    private void getSignalsList(SignalsAdapter adapter) {
+    private ArrayList<Order> getSignalsList(SignalsAdapter adapter) {
+        ArrayList<Order> signalsList = new ArrayList<>();
         // Read from the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("orders");
-        Query query = myRef.orderByChild("ticket");
+        Query query = myRef.orderByChild("time");
         query.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -121,14 +138,21 @@ public class SignalsFragment extends Fragment {
 
                 adapter.notifyDataSetChanged();
 
-                NotificationService notificationService = new NotificationService(mContext);
-                String title = signalsList.get(0).getType() + " " + signalsList.get(0).getPair() + " " + signalsList.get(0).getPrice();
-                String body = "SL: " + signalsList.get(0).getSl() + "  TP: " + signalsList.get(0).getTp();
-                notificationService.sendNoti(title, body);
+//                if (checkPosition == 1) {
+                    notiNewOrder(signalsList);
+//                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+        return signalsList;
+    }
+
+    private void notiNewOrder(ArrayList<Order> signals){
+        NotificationService notificationService = new NotificationService(mContext);
+        String title = signals.get(0).getType() + " " + signals.get(0).getPair() + " " + signals.get(0).getPrice();
+        String body = "SL: " + signals.get(0).getSl() + "  TP: " + signals.get(0).getTp();
+        notificationService.sendNoti(title, body);
     }
 }

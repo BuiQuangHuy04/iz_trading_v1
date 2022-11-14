@@ -1,6 +1,7 @@
 package com.huybui.iztradingv1.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

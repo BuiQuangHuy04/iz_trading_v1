@@ -94,8 +94,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 Toast.makeText(ChangePasswordActivity.this,"Đổi mật khẩu thành công!",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ChangePasswordActivity.this,SigninActivity.class));
             } else {
-                new SigninActivity().alert("Vui lòng đăng nhập lại",this);
-                startActivity(new Intent(ChangePasswordActivity.this,SigninActivity.class));
+                new SigninActivity().alert("Có lỗi xảy ra!\nVui lòng đăng nhập lại",this);
+                new Handler().postDelayed(()->{
+                    startActivity(new Intent(ChangePasswordActivity.this,SigninActivity.class));
+                },(long) new SigninActivity().alert("Có lỗi xảy ra!\nVui lòng đăng nhập lại",this)*1000L);
             }
             progressDialog.dismiss();
         });

@@ -19,6 +19,7 @@
         tools:targetApi="32">
         <activity
             android:name=".Activity.SplashActivity"
+            android:theme="@style/Theme.IZTradingV1.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +33,7 @@
         </activity>
         <activity
             android:name=".Activity.SigninActivity"
+            android:theme="@style/Theme.IZTradingV1.NoActionBar"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
