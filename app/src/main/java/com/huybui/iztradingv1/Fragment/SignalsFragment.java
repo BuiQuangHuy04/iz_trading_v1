@@ -123,7 +123,7 @@ public class SignalsFragment extends Fragment {
 
                 NotificationService notificationService = new NotificationService(mContext);
                 String title = signalsList.get(0).getType() + " " + signalsList.get(0).getPair() + " " + signalsList.get(0).getPrice();
-                String body = "SL: " + signalsList.get(0).getSl() + "\nTP: " + signalsList.get(0).getTp();
+                String body = "SL: " + signalsList.get(0).getSl() + "  TP: " + signalsList.get(0).getTp();
                 notificationService.sendNoti(title, body);
             }
 

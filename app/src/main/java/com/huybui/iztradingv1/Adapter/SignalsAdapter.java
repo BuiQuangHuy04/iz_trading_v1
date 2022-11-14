@@ -96,8 +96,8 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
 
         int color = Color.parseColor("#ffd966");
 
-        if (order.getComment().matches("")) {
-            return color = Color.parseColor("#28498C");
+        if (order.getComment().matches("0")) {
+            return Color.parseColor("#28498C");
         }
 
         float openPrice = Float.parseFloat(order.getPrice());
