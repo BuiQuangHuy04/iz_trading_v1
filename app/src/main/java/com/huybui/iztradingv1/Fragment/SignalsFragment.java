@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.huybui.iztradingv1.Activity.SigninActivity;
 import com.huybui.iztradingv1.Adapter.SignalsAdapter;
 import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
@@ -27,6 +30,8 @@ import com.huybui.iztradingv1.Service.NotificationService;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -35,11 +40,15 @@ public class SignalsFragment extends Fragment {
 
     protected Context mContext;
 
-    protected int checkPosition = 0;
+    private EditText edtSearch;
 
-//    protected ArrayList<Order> signals = new ArrayList<>();
+    private ImageView imgvSearch;
+
+    protected ArrayList<Order> signals = new ArrayList<>();
 
     private TextView  tvTotal, tvWinsRate, tvWinsTotal;
+
+    protected SignalsAdapter adapter;
 
     public SignalsFragment(Context context){
         this.mContext = context;
@@ -53,28 +62,33 @@ public class SignalsFragment extends Fragment {
         tvTotal = rootview.findViewById(R.id.tv_total_signals);
         tvWinsRate = rootview.findViewById(R.id.tv_wins_rate);
         tvWinsTotal = rootview.findViewById(R.id.tv_wins_total);
+        edtSearch = rootview.findViewById(R.id.search_view);
+        imgvSearch = rootview.findViewById(R.id.imgv_search);
 
         RecyclerView rcvSignals = rootview.findViewById(R.id.item_signal);
 
         rcvSignals.setLayoutManager(new GridLayoutManager(rootview.getContext(),1));
 
-        SignalsAdapter adapter = new SignalsAdapter(rootview.getContext());
+        adapter = new SignalsAdapter(rootview.getContext());
 
-        ArrayList<Order> signals;
+        getSignalsList();
 
-        checkPosition = 1;
+        imgvSearch.setOnClickListener(view-> searchPair());
 
-        signals = getSignalsList(adapter);
-
-        adapter.setData(signals);
+        adapter.setData((List<Order>) signals);
 
         rcvSignals.setAdapter(adapter);
+
+        edtSearch.setMaxWidth(8);
 
         return rootview;
     }
 
-    private ArrayList<Order> getSignalsList(SignalsAdapter adapter) {
-        ArrayList<Order> signalsList = new ArrayList<>();
+    private void searchPair() {
+        getSignalsList();
+    }
+
+    private void getSignalsList() {
         // Read from the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("orders");
@@ -83,9 +97,23 @@ public class SignalsFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                signalsList.clear();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    signalsList.add(dataSnapshot.getValue(Order.class));
+                signals.clear();
+                String pair = edtSearch.getText().toString().trim();
+
+                if (!pair.matches("")) {
+                    SignalsFragment.this.signals.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                        if (Objects.requireNonNull(dataSnapshot.getValue(Order.class)).getPair().toUpperCase(Locale.ROOT).contains(pair.toUpperCase(Locale.ROOT))) {
+                            signals.add(dataSnapshot.getValue(Order.class));
+                        }
+                    }
+                    if (signals.size()==0) {
+                        new SigninActivity().alert("Không có kết quả!",mContext);
+                    }
+                } else {
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                        signals.add(dataSnapshot.getValue(Order.class));
+                    }
                 }
 
                 //so pips win
@@ -93,7 +121,7 @@ public class SignalsFragment extends Fragment {
                 //so lenh win
                 AtomicInteger winNo = new AtomicInteger();
                 try {
-                    signalsList.forEach(o->{
+                    signals.forEach(o->{
                         if(o.getComment() != null && !o.getComment().trim().isEmpty() && !o.getComment().trim().equals("cabinet") && !o.getComment().trim().isEmpty()) {
                             double prf;
                             double open = Double.parseDouble(o.getPrice().trim());
@@ -111,32 +139,34 @@ public class SignalsFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                float winRate = Float.parseFloat(String.valueOf(winNo)) / (float) signalsList.size();
+                float winRate = Float.parseFloat(String.valueOf(winNo)) / (float) signals.size();
 
                 DecimalFormat df = new DecimalFormat("#.###");
 
-                String totalSignalsStr = String.valueOf(signalsList.size());
+                String totalSignalsStr = String.valueOf(signals.size());
                 String winTotalsStr = String.valueOf(winNo);
                 String winRateStr = "("+df.format(winRate*100)+"%)";
                 tvTotal.setText(totalSignalsStr);
                 tvWinsTotal.setText(winTotalsStr);
                 tvWinsRate.setText(winRateStr);
 
-                Collections.reverse(Objects.requireNonNull(signalsList));
+                Collections.reverse(Objects.requireNonNull(signals));
 
                 adapter.notifyDataSetChanged();
 
-                notiNewOrder(signalsList);
+                notiNewOrder(signals);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-        return signalsList;
     }
 
     private void notiNewOrder(ArrayList<Order> signals){
         NotificationService notificationService = new NotificationService(mContext);
+        if (signals.size() == 0) {
+            return;
+        }
         String title = signals.get(0).getType() + " " + signals.get(0).getPair() + " " + signals.get(0).getPrice();
         String body = "SL: " + signals.get(0).getSl() + "  TP: " + signals.get(0).getTp();
         notificationService.sendNoti(title, body);

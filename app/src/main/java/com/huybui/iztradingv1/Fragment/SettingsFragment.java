@@ -103,6 +103,7 @@ public class SettingsFragment extends Fragment {
 
         userAvaImg.setOnClickListener(view -> requestPermission());
 
+
         saveInfoBtn.setOnClickListener(view -> {
             disableEdt();
             updateUiAfterChange();

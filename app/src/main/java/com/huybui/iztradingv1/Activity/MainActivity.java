@@ -3,6 +3,7 @@ package com.huybui.iztradingv1.Activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ import com.huybui.iztradingv1.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUi() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        }
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         getSupportFragmentManager().beginTransaction().replace(R.id.fpageview, signalsFragment).commit();
     }

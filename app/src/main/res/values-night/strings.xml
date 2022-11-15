@@ -37,4 +37,5 @@
     <string name="enter_email">Nhập email:</string>
     <string name="send_request_reset_pass">Xác nhận</string>
     <string name="action_search">Tìm kiếm</string>
+    <string name="search">Tìm kiếm</string>
 </resources>
