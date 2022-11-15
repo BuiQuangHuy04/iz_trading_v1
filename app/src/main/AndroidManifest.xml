@@ -41,6 +41,7 @@
         </activity>
         <activity
             android:name=".Activity.ForgotPassActivity"
+            android:parentActivityName=".Activity.SigninActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
