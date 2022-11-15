@@ -72,18 +72,6 @@ public class SignalsFragment extends Fragment {
 
         return rootview;
     }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        checkPosition = 1;
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        checkPosition = 0;
-//    }
 
     private ArrayList<Order> getSignalsList(SignalsAdapter adapter) {
         ArrayList<Order> signalsList = new ArrayList<>();
@@ -138,9 +126,7 @@ public class SignalsFragment extends Fragment {
 
                 adapter.notifyDataSetChanged();
 
-//                if (checkPosition == 1) {
-                    notiNewOrder(signalsList);
-//                }
+                notiNewOrder(signalsList);
             }
 
             @Override

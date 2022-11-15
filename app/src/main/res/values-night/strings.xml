@@ -36,4 +36,5 @@
     <string name="forgot_pass">Quên mật khẩu</string>
     <string name="enter_email">Nhập email:</string>
     <string name="send_request_reset_pass">Xác nhận</string>
+    <string name="action_search">Tìm kiếm</string>
 </resources>
