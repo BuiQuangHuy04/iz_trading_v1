@@ -3,15 +3,16 @@ package com.huybui.iztradingv1.Model;
 import java.io.Serializable;
 
 public class Order implements Serializable {
-    public String ticket;
-    public String pair;
-    public String type;
-    public String lots;
-    public String price;
-    public String sl;
-    public String tp;
-    public String time;
-    public String comment;
+
+    protected String ticket;
+    protected String pair;
+    protected String type;
+    protected String lots;
+    protected String price;
+    protected String sl;
+    protected String tp;
+    protected String time;
+    protected String comment;
 
     public Order() {
     }
@@ -20,16 +21,8 @@ public class Order implements Serializable {
         return ticket;
     }
 
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
     public String getPair() {
         return pair;
-    }
-
-    public void setPair(String pair) {
-        this.pair = pair;
     }
 
     public String getType() {
@@ -40,52 +33,24 @@ public class Order implements Serializable {
         this.type = type;
     }
 
-    public String getLots() {
-        return lots;
-    }
-
-    public void setLots(String lots) {
-        this.lots = lots;
-    }
-
     public String getPrice() {
         return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public String getSl() {
         return sl;
     }
 
-    public void setSl(String sl) {
-        this.sl = sl;
-    }
-
     public String getTp() {
         return tp;
-    }
-
-    public void setTp(String tp) {
-        this.tp = tp;
     }
 
     public String getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getComment() {
         return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @Override

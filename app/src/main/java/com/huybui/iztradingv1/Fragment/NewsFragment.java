@@ -30,6 +30,8 @@ public class NewsFragment extends Fragment {
 
     private final List<News> newsList = new ArrayList<>();
 
+    protected NewsAdapter mNewsAdapter;
+
     public NewsFragment(){}
 
     @Override
@@ -41,7 +43,7 @@ public class NewsFragment extends Fragment {
 
         rcvNews.setLayoutManager(new GridLayoutManager(rootview.getContext(),1));
 
-        NewsAdapter mNewsAdapter = new NewsAdapter(rootview.getContext());
+        mNewsAdapter = new NewsAdapter(rootview.getContext());
 
         getNewsList(mNewsAdapter, container);
 

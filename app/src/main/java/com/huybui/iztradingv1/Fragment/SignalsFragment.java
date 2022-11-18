@@ -50,6 +50,8 @@ public class SignalsFragment extends Fragment {
 
     protected SignalsAdapter adapter;
 
+    protected NotificationService notificationService;
+
     public SignalsFragment(Context context){
         this.mContext = context;
     }
@@ -154,6 +156,8 @@ public class SignalsFragment extends Fragment {
 
                 adapter.notifyDataSetChanged();
 
+                System.out.println("running: "+runningOrder(signals));
+
                 notiNewOrder(signals);
             }
 
@@ -162,8 +166,19 @@ public class SignalsFragment extends Fragment {
         });
     }
 
+    protected ArrayList<Order> runningOrder(ArrayList<Order> signals){
+        ArrayList<Order> listRunningOrders = new ArrayList<>();
+
+        signals.forEach(o->{
+            if (o.getComment().matches("")) {
+                listRunningOrders.add(o);
+            }
+        });
+        return listRunningOrders;
+    }
+
     private void notiNewOrder(ArrayList<Order> signals){
-        NotificationService notificationService = new NotificationService(mContext);
+        notificationService = new NotificationService(mContext);
         if (signals.size() == 0) {
             return;
         }

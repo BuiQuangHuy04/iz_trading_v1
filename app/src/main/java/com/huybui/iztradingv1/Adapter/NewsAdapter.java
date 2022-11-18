@@ -57,12 +57,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewholder
         holder.txtv_title_news.setText(news.getTitle());
 
         holder.layout_news_container.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, NewsDetailActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("news_detail", news);
-            intent.putExtras(bundle);
-            mContext.startActivity(intent);
+            onClickNews(news);
         });
+    }
+
+    private void onClickNews(News news) {
+        Intent intent = new Intent(mContext, NewsDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("news_detail", news);
+        intent.putExtras(bundle);
+        mContext.startActivity(intent);
     }
 
     @Override

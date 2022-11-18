@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.huybui.iztradingv1.Activity.SigninActivity;
 import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
 
@@ -61,34 +61,45 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
         holder.txtvTp.setText(order.getTp());
 
         holder.cardvContainer.setOnClickListener(view -> {
-            String hexColor = "#"+Integer.toHexString(color).substring(2);
-            new SigninActivity().alert(getSignalResult(hexColor),mContext);
+//            String hexColor = "#"+Integer.toHexString(color).substring(2);
+            System.out.println(getSignalResult(order));
+            alert(getSignalResult(order),mContext);
         });
     }
 
-    public String getSignalResult(String hexColor) {
-        String message = "";
-        switch (hexColor.toLowerCase()) {
-            case "#7e57c0":
-                message = "Màu tím nhạt là lệnh đã chạm điểm chốt lãi";
-                break;
-            case "#1c8e40":
-                message = "Màu xanh lá là lệnh đã có lãi";
-                break;
-            case "#0c04aa":
-                message = "Màu xanh dương là lệnh đã chạm điểm cắt lỗ";
-                break;
-            case "#cc0000":
-                message = "Màu đỏ là lệnh bị lỗ";
-                break;
-            case "#ffd966":
-                message = "Màu vàng là lệnh hòa";
-                break;
-            case "#28498c":
-                message = "Màu xanh nước là lệnh đang chạy";
-                break;
+    private String getSignalResult(Order order) {
+
+        if (order.getComment().matches("") | order.getComment().matches("0")) {
+            return "Lệnh đang chạy";
         }
-        return message;
+
+        float openPrice = Float.parseFloat(order.getPrice());
+        float closePrice = Float.parseFloat(order.getComment());
+        float pips = 0;
+        String type = order.getType().trim();
+        String result = "";
+
+        if (type.equalsIgnoreCase("SELL")) {
+            pips = 10*(openPrice-closePrice);
+        }
+
+        if (type.equalsIgnoreCase("BUY")) {
+            pips = 10*(closePrice-openPrice);
+        }
+
+        if (pips > 0) {
+            result = "Lệnh " + order.getTicket() + " lãi " + pips + " pip";
+        }
+
+        if (pips < 0) {
+            result = "Lệnh " + order.getTicket() + " lỗ " + Math.abs(pips) + " pip";
+        }
+
+        if (pips == 0) {
+            result = "Lệnh " + order.getTicket() + " hòa";
+        }
+
+        return result;
     }
 
     private int setColor(Order order) {
@@ -147,6 +158,16 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
             }
         }
         return color;
+    }
+
+    public void alert(String mesStr, Context context) {
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+
+        dlgAlert.setMessage(mesStr);
+        dlgAlert.setTitle("Thông báo");
+        dlgAlert.setPositiveButton("OK", null);
+
+        dlgAlert.show();
     }
 
     private String convertTimeStamp(String time) {

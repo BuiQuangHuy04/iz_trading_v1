@@ -52,6 +52,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_settings, container, false);
 
+
         userAvaImg = rootview.findViewById(R.id.img_user_ava);
         userNameEdt = rootview.findViewById(R.id.etxt_username);
         userMailEdt = rootview.findViewById(R.id.etxt_usermail);

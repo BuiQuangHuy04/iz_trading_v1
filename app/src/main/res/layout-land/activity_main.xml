@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:theme="@style/Theme.IZTradingV1.NoActionBar"
     android:background="@color/dark_background"
     tools:context=".Activity.MainActivity">
