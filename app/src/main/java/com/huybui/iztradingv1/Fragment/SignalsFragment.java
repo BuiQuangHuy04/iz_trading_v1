@@ -27,10 +27,10 @@ import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
 import com.huybui.iztradingv1.Service.NotificationService;
 
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,6 +45,7 @@ public class SignalsFragment extends Fragment {
     private ImageView imgvSearch;
 
     protected ArrayList<Order> signals = new ArrayList<>();
+    protected ArrayList<Order> runningSignals = new ArrayList<>();
 
     private TextView  tvTotal, tvWinsRate, tvWinsTotal;
 
@@ -77,7 +78,7 @@ public class SignalsFragment extends Fragment {
 
         imgvSearch.setOnClickListener(view-> searchPair());
 
-        adapter.setData((List<Order>) signals);
+        adapter.setData(signals);
 
         rcvSignals.setAdapter(adapter);
 
@@ -156,9 +157,25 @@ public class SignalsFragment extends Fragment {
 
                 adapter.notifyDataSetChanged();
 
-                System.out.println("running: "+runningOrder(signals));
+                runningSignals = runningOrder(signals);
 
-                notiNewOrder(signals);
+                if (runningSignals.size() == 0) {
+                    return;
+                }
+
+                Order lastestOrder = runningSignals.get(0);
+                for (int i = 1; i < runningSignals.size(); i++) {
+                    if (Integer.parseInt(lastestOrder.getTime()) < Integer.parseInt(runningSignals.get(i).getTime())) {
+                        lastestOrder = runningSignals.get(i);
+                    }
+                }
+
+                System.out.println("current: "+new Timestamp(System.currentTimeMillis()).getTime()/1000);
+                System.out.println("lastest order: "+Integer.parseInt(lastestOrder.getTime()));
+
+                if (Math.abs(new Timestamp(System.currentTimeMillis()).getTime()/1000 - Integer.parseInt(lastestOrder.getTime())) > 7195 & Math.abs(new Timestamp(System.currentTimeMillis()).getTime()/1000 - Integer.parseInt(lastestOrder.getTime())) < 7205) {
+                    notiNewOrder(lastestOrder);
+                }
             }
 
             @Override
@@ -170,20 +187,18 @@ public class SignalsFragment extends Fragment {
         ArrayList<Order> listRunningOrders = new ArrayList<>();
 
         signals.forEach(o->{
-            if (o.getComment().matches("")) {
+            if (o.getComment().matches("0")) {
                 listRunningOrders.add(o);
             }
         });
         return listRunningOrders;
     }
 
-    private void notiNewOrder(ArrayList<Order> signals){
+    private void notiNewOrder(Order order){
         notificationService = new NotificationService(mContext);
-        if (signals.size() == 0) {
-            return;
-        }
-        String title = signals.get(0).getType() + " " + signals.get(0).getPair() + " " + signals.get(0).getPrice();
-        String body = "SL: " + signals.get(0).getSl() + "  TP: " + signals.get(0).getTp();
+
+        String title = order.getType() + " " + order.getPair() + " " + order.getPrice();
+        String body = "SL: " + order.getSl() + "  TP: " + order.getTp();
         notificationService.sendNoti(title, body);
     }
 }

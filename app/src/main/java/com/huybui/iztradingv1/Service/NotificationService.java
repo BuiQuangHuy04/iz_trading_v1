@@ -50,6 +50,8 @@ public class NotificationService {
 
             Notification notification = notiBuilder.build();
 
+            notification.sound = Uri.parse("android.resource://"+ mContext.getPackageName() + "/" + R.raw.ringtone1);
+
             NotificationManager notificationManager = mContext.getSystemService(NotificationManager.class);
             if (notificationManager != null) {
                 notificationManager.notify(1, notification);

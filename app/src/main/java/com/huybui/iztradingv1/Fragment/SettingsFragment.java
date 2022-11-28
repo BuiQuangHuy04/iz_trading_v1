@@ -8,7 +8,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -40,7 +40,7 @@ public class SettingsFragment extends Fragment {
     private Uri uri;
 
     private final Context mContext;
-    private CircleImageView userAvaImg;
+    protected CircleImageView userAvaImg;
     private EditText userNameEdt, userMailEdt, userPhoneEdt;
     private Button changeInfoBtn, saveInfoBtn, cancelChangeBtn, changePassBtn, logoutBtn;
     protected ProgressDialog progressDialog;
@@ -51,7 +51,6 @@ public class SettingsFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_settings, container, false);
-
 
         userAvaImg = rootview.findViewById(R.id.img_user_ava);
         userNameEdt = rootview.findViewById(R.id.etxt_username);
@@ -86,6 +85,9 @@ public class SettingsFragment extends Fragment {
         String name = user.getDisplayName();
         String email = user.getEmail();
         Uri photourl = user.getPhotoUrl();
+
+        System.out.println(photourl);
+
         if (name == null) {
             userNameEdt.setVisibility(View.GONE);
         } else {
@@ -93,9 +95,9 @@ public class SettingsFragment extends Fragment {
             userNameEdt.setText(name);
             userMailEdt.setText(email);
             Picasso.get()
-                .load(photourl)
-                .placeholder(R.mipmap.user_ava_default_round)
-                .into(userAvaImg);
+                    .load(photourl)
+                    .error(R.mipmap.user_ava_default_round)
+                    .into(userAvaImg);
         }
     }
 
@@ -103,7 +105,6 @@ public class SettingsFragment extends Fragment {
         updateUiBeforeChange();
 
         userAvaImg.setOnClickListener(view -> requestPermission());
-
 
         saveInfoBtn.setOnClickListener(view -> {
             disableEdt();

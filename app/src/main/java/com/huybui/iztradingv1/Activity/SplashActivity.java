@@ -31,9 +31,6 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(SplashActivity.this, SigninActivity.class));
         } else {
             //Da login
-            System.out.println(user.getDisplayName());
-            System.out.println(user.getEmail());
-            System.out.println(user.getPhotoUrl());
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }
 

@@ -3,6 +3,7 @@ package com.huybui.iztradingv1.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.huybui.iztradingv1.Model.Order;
 import com.huybui.iztradingv1.R;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -85,6 +88,14 @@ public class SignalsAdapter extends RecyclerView.Adapter<SignalsAdapter.OrderVie
 
         if (type.equalsIgnoreCase("BUY")) {
             pips = 10*(closePrice-openPrice);
+        }
+
+        if (order.getPair().toUpperCase(Locale.ROOT).contains("CRUDE")) {
+            pips = 10*pips;
+        }
+
+        if (order.getPair().toUpperCase(Locale.ROOT).contains("EUR") | order.getPair().toUpperCase(Locale.ROOT).contains("GBP")) {
+            pips = 1000*pips;
         }
 
         if (pips > 0) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IZTradingV1</string>
+    <string name="app_name">IZ Trading</string>
     <string name="show_password">show password</string>
     <string name="password">Mật khẩu</string>
     <string name="signin">Đăng nhập</string>
