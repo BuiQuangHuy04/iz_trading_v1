@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.huybui.iztradingv1.Adapter.NewsAdapter;
 import com.huybui.iztradingv1.Model.News;
@@ -45,7 +46,7 @@ public class NewsFragment extends Fragment {
 
         mNewsAdapter = new NewsAdapter(rootview.getContext());
 
-        getNewsList(mNewsAdapter, container);
+        getNewsList(mNewsAdapter);
 
         mNewsAdapter.setData(newsList);
 
@@ -54,22 +55,26 @@ public class NewsFragment extends Fragment {
         return rootview;
     }
 
-    private void getNewsList(NewsAdapter adapter, ViewGroup viewGroup) {
+    private void getNewsList(NewsAdapter adapter) {
         // Read from the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("news");
-        myRef.addValueEventListener(new ValueEventListener() {
+        Query query = myRef.orderByChild("date");
+        query.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    newsList.add(dataSnapshot.getValue(News.class));
+                    if (newsList.contains(dataSnapshot.getValue(News.class))) {
+                        return;
+                    } else {
+                        newsList.add(dataSnapshot.getValue(News.class));
+                    }
                 }
 
                 Collections.reverse(Objects.requireNonNull(newsList));
 
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override

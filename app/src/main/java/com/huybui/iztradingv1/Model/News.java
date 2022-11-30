@@ -6,14 +6,14 @@ public class News implements Serializable {
     protected String thumbnail;
     protected String title;
     protected String date;
-    protected String user_account;
+    protected String tag;
     protected String text;
 
-    public News(String thumbnail, String title, String date, String user_account, String text) {
+    public News(String thumbnail, String title, String date, String tag, String text) {
         this.thumbnail = thumbnail;
         this.title = title;
         this.date = date;
-        this.user_account = user_account;
+        this.tag = tag;
         this.text = text;
     }
 
@@ -32,8 +32,8 @@ public class News implements Serializable {
         return date;
     }
 
-    public String getUser_account() {
-        return user_account;
+    public String getTag() {
+        return tag;
     }
 
     public String getText() {
@@ -50,7 +50,7 @@ public class News implements Serializable {
                 "thumbnail='" + thumbnail + '\'' +
                 ", title='" + title + '\'' +
                 ", date='" + date + '\'' +
-                ", user_account='" + user_account + '\'' +
+                ", tag='" + tag + '\'' +
                 ", text='" + text + '\'' +
                 '}';
     }
