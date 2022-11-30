@@ -15,7 +15,7 @@
         android:background="@color/background_signal_container">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="5dp">
 
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:text="Các NHNN Trung Quốc bán đô la để hỗ trợ đồng nhân dân tệ vào cuối ngày thứ Ba"/>
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/txtv_user_acc"
+                    android:id="@+id/txtv_news_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -69,8 +69,8 @@
                 android:id="@+id/txtv_news_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="16dp"
+                android:layout_margin="10dp"
+                android:textSize="16sp"
                 android:text="Investing.com - Các ngân hàng quốc doanh lớn của Trung Quốc đã bán đô la Mỹ ở cả thị trường trong nước và nước ngoài vào cuối phiên giao dịch hôm thứ Ba để hỗ trợ đồng nhân dân tệ đang suy yếu, hai nguồn tin trích dẫn bởi Reuters. \n Động thái bán đô la diễn ra khi đồng tiền Trung Quốc đang đối mặt với áp lực giảm giá ngày càng tăng, với đồng nhân dân tệ trong nước chạm mức thấp nhất kể từ tháng 12 năm 2007 và giá trị của đồng nhân dân tệ so với tiền tệ của các đối tác thương mại lớn ở mức thấp nhất trong 5 tháng.\nMột trong những nguồn tin cho biết, việc các ngân hàng nhà nước bán đô la vào đầu giờ giao dịch của Hoa Kỳ đã nâng đồng nhân dân tệ lên, lưu ý rằng hành động này diễn ra ở cả thị trường trong nước và nước ngoài. \nNguồn tin khác cũng phát hiện ra rằng ngân hàng nhà nước cũng đã có động thái bán đô la trên thị trường trong nước vào cuối ngày châu Á. \nCác nguồn tin cho biết việc các chi nhánh trong nước của các ngân hàng lớn tại Trung Quốc hoạt động trong các giao dịch trong nước trong giờ giao dịch ở London hoặc New York là điều bất thường, mặc dù họ thường giao dịch bằng đồng nhân dân tệ ở nước ngoài và sử dụng các động thái của mình để dẫn dắt đối tác trong nước. \nĐồng nhân dân tệ ở nước ngoài đã liên tiếp chạm mức thấp kỷ lục trong những phiên gần đây, phản ánh đồng đô la mạnh lên và lo ngại về nền kinh tế Trung Quốc đang tăng trưởng chậm lại. \nViệc mua đồng nhân dân tệ của các ngân hàng nhà nước đã giúp đồng tiền của nước này tăng từ mức thấp kỷ lục 7,3746 / đô la lên 7,3034. \nĐồng nhân dân tệ trong nước tăng từ mức thấp 7,31 để lấy lại hầu hết các khoản lỗ trong ngày sau các hành động của ngân hàng nhà nước. Mở cửa ở mức 7,2949 mỗi đô la khi giao dịch tiếp tục vào thứ Tư và tăng hơn một chút ở mức 7,2971 lúc 0229 GMT. \nCác ngân hàng nhà nước ở Trung Quốc thường thay mặt Ngân hàng Nhân dân Trung Quốc giao dịch trên thị trường ngoại hối, nhưng đồng thời họ cũng có thể tự giao dịch hoặc thực hiện lệnh giao dịch cho các khách hàng doanh nghiệp của mình. \nCác nhà quản lý Trung Quốc đã bận rộn đưa ra các biện pháp để ngăn chặn sự mất giá nhanh chóng của đồng nhân dân tệ. Họ đã đưa ra một tham số về tài trợ doanh nghiệp xuyên biên giới để giúp các doanh nghiệp trong nước dễ dàng huy động vốn từ thị trường nước ngoài vào thứ Ba."
                 android:textColor="@color/white"/>
 
